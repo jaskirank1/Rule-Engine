@@ -27,7 +27,7 @@ const createAST = (ruleString) => {
                 }
                 operatorStack.push(token);
             } else {
-                outputQueue.push(token); // Condition token
+                outputQueue.push(token);
             }
         });
 
@@ -59,7 +59,7 @@ const createAST = (ruleString) => {
             }
         });
     
-        return stack.pop(); // The root of the AST
+        return stack.pop();
     };    
     
     // Tokenize the rule string

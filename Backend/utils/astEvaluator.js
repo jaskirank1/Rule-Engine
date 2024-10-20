@@ -12,9 +12,8 @@ const evaluateRule = (node, data) => {
         throw new Error("Invalid AST node: null node encountered");
     }
 
-    // Handle condition nodes
     if (node.type === 'condition') {
-        const { attribute, operator, value } = node.value; // Expecting structured value
+        const { attribute, operator, value } = node.value;
 
         // Ensure value is treated as a numeric value when appropriate
         const numericValue = isNaN(value) ? value.replace(/'/g, '') : Number(value);
@@ -27,13 +26,12 @@ const evaluateRule = (node, data) => {
             case '<=': return dataValue <= numericValue;
             case '=': // Handle '=' as a valid equality operator
             case '==':
-                return dataValue == numericValue; // Equality check (type coercion)
-            case '!=': return dataValue != numericValue; // Be cautious with != (type coercion)
+                return dataValue == numericValue;
+            case '!=': return dataValue != numericValue;
             default: throw new Error(`Unsupported operator: ${operator}`);
         }
     }
 
-    // Handle operator nodes
     if (node.type === 'operator') {
         // Initialize the result of left and right nodes as true (since AND/OR with null is problematic)
         const leftResult = node.left ? evaluateRule(node.left, data) : true;

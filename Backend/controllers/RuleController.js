@@ -31,7 +31,7 @@ const createRule = async(req,res) => {
 
 const rulesList = async(req,res) => {
     try {
-        const rules = await Rule.find(); // Fetch all rules from the database
+        const rules = await Rule.find();
         res.json({ rules });
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch rules' });
@@ -49,13 +49,12 @@ const updatingExistingRule = async(req,res)=>{
     }
 
     try {
-        const rules = await Rule.find(); // Fetch all rules from the database
+        const rules = await Rule.find();
 
         if (rules.length === 0) {
             return res.status(404).json({ message: 'No rules found. Please create a new rule.' });
         }
 
-        //Generating new AST corresponding to the new rule
         const ast = createAST(rule); 
 
         // Update the rule in the database after checking if there is atleast one rule in database
@@ -88,16 +87,14 @@ const updatingExistingRule = async(req,res)=>{
 const evaluateUserEligibility = async(req,res) => {
     const {data, rule} = req.body;
 
-    // Validate the rule string before evaluation
-    const validation = validateRuleString(rule);
-    if (!validation.isValid) {
-        // Return an error response if the rule validation fails
-        return res.status(400).json({ error: validation.message });
-    }
-
     try{
         let ast;
         if(rule){
+            const validation = validateRuleString(rule);
+            if (!validation.isValid) {
+                // return an error response if the rule validation fails
+                return res.status(400).json({ error: validation.message });
+            }
             // rule is provided by the user then use that only
             ast = createAST(rule);
         }

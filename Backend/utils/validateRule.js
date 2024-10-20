@@ -2,14 +2,14 @@ const attributeCatalog = require('./attributeCatalog');
 
 const validateRuleString = (ruleString) => {
     try {
-        // Step 1: Check for unmatched parentheses
+        // Check for unmatched parentheses
         const openingParenthesesCount = (ruleString.match(/\(/g) || []).length;
         const closingParenthesesCount = (ruleString.match(/\)/g) || []).length;
         if (openingParenthesesCount !== closingParenthesesCount) {
             throw new Error("Mismatched parentheses in rule string");
         }
 
-        // Step 2: Define allowed operators
+        // Define allowed operators
         const allowedLogicalOperators = ["AND", "OR"];
 
         // Regular expression to match complete conditions like "age > 30" or "department = 'Sales'"

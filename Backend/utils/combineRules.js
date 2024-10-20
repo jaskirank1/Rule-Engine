@@ -37,7 +37,7 @@ const combine_rules_with_optimization = (rules) => {
     const conditionSet = new Set(); // To track unique conditions
     const asts = rules.map(rule => {
         const ast = createAST(rule);
-        extractConditions(ast, conditionSet); // Extract conditions to deduplicate
+        extractConditions(ast, conditionSet);
         return ast;
     });
 
@@ -48,18 +48,17 @@ const combine_rules_with_optimization = (rules) => {
     let currentNode = combinedRoot;
     asts.forEach((ast, index) => {
         if (index === 0) {
-            currentNode.left = ast; // The first AST goes to the left
+            currentNode.left = ast;
         } else {
             const rightNode = new Node('operator', currentNode.right, ast, rootOperator);
-            currentNode.right = rightNode; // Chain the rest with the chosen root operator
-            currentNode = rightNode; // Move current to the right for the next iteration
+            currentNode.right = rightNode;
+            currentNode = rightNode;
         }
     });
 
-    return combinedRoot; // Return the combined and optimized AST
+    return combinedRoot;
 };
 
-// Main function to fetch rules from the database, combine them, and return the AST root
 const combineStoredRules = async () => {
     const ruleStrings = await fetchRulesFromDatabase();
     if (ruleStrings.length === 0) {
